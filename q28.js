@@ -20,7 +20,7 @@ db.marks.aggregate([
       as: "subjects",
     },
   },
-  {$unwind:"$subjects"},
+  { $unwind: "$subjects" },
   {
     $lookup: {
       from: "students",
@@ -29,30 +29,46 @@ db.marks.aggregate([
       as: "students",
     },
   },
-  {$unwind:"$students"},
-  {$project:{_id:0,"students.studentName":1,"subjects.subjectName":1,score:1}}
+  { $unwind: "$students" },
+  {
+    $project: {
+      _id: 0,
+      "students.studentName": 1,
+      "subjects.subjectName": 1,
+      score: 1,
+    },
+  },
 ]);
 
-
 // db.marks.aggregate([
-db.createView("marksView","marks",[
-    {
-      $lookup: {
-        from: "subjects",
-        localField: "subjectId",
-        foreignField: "_id",
-        as: "subjects",
-      },
+db.createView("marksView", "marks", [
+  {
+    $lookup: {
+      from: "subjects",
+      localField: "subjectId",
+      foreignField: "_id",
+      as: "subjects",
     },
-    {$unwind:"$subjects"},
-    {
-      $lookup: {
-        from: "students",
-        localField: "studentId",
-        foreignField: "_id",
-        as: "students",
-      },
+  },
+  { $unwind: "$subjects" },
+  {
+    $lookup: {
+      from: "students",
+      localField: "studentId",
+      foreignField: "_id",
+      as: "students",
     },
-    {$unwind:"$students"},
-    {$project:{"students.studentName":1,"subjects.subjectName":1,score:1}}
-  ]);
+  },
+  { $unwind: "$students" },
+  {
+    $project: {
+      "students.studentName": 1,
+      "subjects.subjectName": 1,
+      score: 1,
+    },
+  },
+]);
+
+db.createView("HREmployees", "employees", [
+  { $match: { department: { $eq: "HR" } } },
+]);
