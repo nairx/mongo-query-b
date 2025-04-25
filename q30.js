@@ -29,7 +29,7 @@ use newdb
 db.emp.find()
 exit
 
-mongosh --port 27019
+mongosh --port 27020
 db.getMongo().setReadPref("secondary") 
 show dbs
 use newdb
